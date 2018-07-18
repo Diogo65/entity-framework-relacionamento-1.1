@@ -52,11 +52,53 @@ namespace Alura.Loja.Testes.ConsoleApp.Migrations
                     b.ToTable("Produtos");
                 });
 
+            modelBuilder.Entity("Alura.Loja.Testes.ConsoleApp.Promocao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DataInicio");
+
+                    b.Property<DateTime>("DataTermino");
+
+                    b.Property<string>("Descricao");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Promocoes");
+                });
+
+            modelBuilder.Entity("Alura.Loja.Testes.ConsoleApp.PromocaoProduto", b =>
+                {
+                    b.Property<int>("PromocaoId");
+
+                    b.Property<int>("ProdutoId");
+
+                    b.HasKey("PromocaoId", "ProdutoId");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.ToTable("PromocaoProduto");
+                });
+
             modelBuilder.Entity("Alura.Loja.Testes.ConsoleApp.Compra", b =>
                 {
                     b.HasOne("Alura.Loja.Testes.ConsoleApp.Produto", "Produto")
                         .WithMany()
                         .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Alura.Loja.Testes.ConsoleApp.PromocaoProduto", b =>
+                {
+                    b.HasOne("Alura.Loja.Testes.ConsoleApp.Produto", "Produto")
+                        .WithMany()
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Alura.Loja.Testes.ConsoleApp.Promocao", "Promocao")
+                        .WithMany()
+                        .HasForeignKey("PromocaoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
